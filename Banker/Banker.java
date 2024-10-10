@@ -1,15 +1,16 @@
 import java.io.BufferedReader;
 import java.util.Scanner;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Banker {
 	
 	public static Scanner s = new Scanner(System.in);
+	public static String fileName = "clients.csv";
 
 	public static void main(String[] args) {
 		
-		String fileName = "clients.csv";
 		LinkedList masterClientList = new LinkedList();
 		Queue lobbyQueue = new Queue();
 		
@@ -22,7 +23,6 @@ public class Banker {
 	
 	public static void lobbyMenu(Queue lobbyQ) {
 		Client c = new Client();
-		
 		
 		System.out.println("\n***************************");
 		System.out.print("\nAccount Number > ");
@@ -41,7 +41,7 @@ public class Banker {
 		
 		while (choice != 5 && choice != 6) {
 			
-			System.out.println("***************************");
+			System.out.println("\n\n***************************");
 			System.out.println("******* Teller Menu *******");
 			System.out.println("Serving: " + c.getFirstName() + " " + c.getLastName());
 
@@ -66,7 +66,10 @@ public class Banker {
 					deposit(c, masterClient);
 					break;
 				case 3:
-					withdrawal(c, masterClient);
+					Double withdrawal = 0.0;
+					System.out.println("Withdrawal amount: ");
+					withdrawal = s.nextDouble();
+					withdrawal(c, masterClient, withdrawal);
 					break;
 				case 4:
 					closeAcct(c, masterClient);
@@ -84,12 +87,34 @@ public class Banker {
 	}
 		
 		private static void closeAcct(Client c, LinkedList masterClient) {
+			Client fromList = masterClient.find(c.getAcctnum());
+
+			double withdrawal = fromList.getAcctBalance();
+			int answer = -1;
 		
+			System.out.println("\nAre you sure you want to delete account: " + c.getAcctnum() +"?");
+			System.out.println("Yes (0) : No (1)");
+			
+			answer = s.nextInt();
+			
+			if (answer == 0) {
+				// System.out.println("\nWithdrew all funds of " + c.getAcctBalance());
+				
+				withdrawal(c, masterClient, withdrawal);
+				
+				masterClient.closeAcct(c.getAcctnum());
+				
+				System.out.println("Account closed.");
+			
+			}
+			else {
+				System.out.println("Returned to teller menu.\n");
+			}
+				
 	}
 
-		private static void withdrawal(Client c, LinkedList masterClient) {
+		private static void withdrawal(Client c, LinkedList masterClient, Double withdrawal) {
 			Client fromList = masterClient.find(c.getAcctnum());
-			long withdrawl = 0;
 			
 			
 			if (fromList != null) {
@@ -97,20 +122,21 @@ public class Banker {
 				if (c.getFirstName().equalsIgnoreCase(fromList.getFirstName()) && 
 					c.getLastName().equalsIgnoreCase(fromList.getLastName())) {
 					
-					System.out.println("Withdrawl Amount: ");
+				
 					
-					withdrawl = s.nextLong();
+					System.out.println("Withdrawl Amount: " + withdrawal);
 					
-					if(withdrawl < fromList.getAcctBalance()) {
-					fromList.setAcctBalance(fromList.getAcctBalance() - withdrawl);
-					}
-					else {
+					if(withdrawal <= fromList.getAcctBalance()) {
+						
+						fromList.setAcctBalance(fromList.getAcctBalance() - withdrawal);
+						
+						
+				 } else {
 						System.out.println("Insufficent Funds");
 					}
 					
 					System.out.println("\n\nCurrent Balance: $" + fromList.getAcctBalance());
-				}
-				else {
+				} else {
 					System.out.println("\n\n*** Identity does not match account *** \n\n");
 				}
 			}
