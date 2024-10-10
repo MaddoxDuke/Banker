@@ -1,4 +1,3 @@
-
 public class LinkedList {
 	
 	private Client head = null;
@@ -24,11 +23,27 @@ public class LinkedList {
 		
 		while (c != null && c.getAcctnum() != acctNum) {
 			c = c.getNext();
-			
 		}
-		
-		
 		return c;
+	}
+	public long closeAcct(long acctNum) {
+		
+		long count = 0; 
+		Client current = head;
+		Client previous = current;
+		
+		while (current != null) {
+			if (current.getAcctnum() == acctNum) {		
+				count++;
+				previous.setNext(current.getNext());
+				current = current.getNext();	
+			}
+			else {	
+				previous = current;
+				current = current.getNext();
+			}
+		}
+		return count;
 	}
 public void print() {
 		
@@ -38,7 +53,6 @@ public void print() {
 			
 			System.out.println(current.getFirstName() + " " + current.getLastName());
 			current = current.getNext();
-			
 		}
 	}
 }
