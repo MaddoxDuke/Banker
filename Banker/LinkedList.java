@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class LinkedList {
 	
 	private Client head = null;
@@ -23,29 +28,35 @@ public class LinkedList {
 		
 		while (c != null && c.getAcctnum() != acctNum) {
 			c = c.getNext();
+			
 		}
+		
+		
 		return c;
 	}
 	public long closeAcct(long acctNum) {
-		
 		long count = 0; 
 		Client current = head;
 		Client previous = current;
 		
 		while (current != null) {
-			if (current.getAcctnum() == acctNum) {		
+			if (current.getAcctnum() == acctNum) {
+				
 				count++;
 				previous.setNext(current.getNext());
-				current = current.getNext();	
+				current = current.getNext();
+				
 			}
-			else {	
+			else {
+				
 				previous = current;
 				current = current.getNext();
 			}
 		}
+		
 		return count;
 	}
-public void print() {
+	public void print() {
 		
 		Client current = head;
 		
@@ -53,6 +64,32 @@ public void print() {
 			
 			System.out.println(current.getFirstName() + " " + current.getLastName());
 			current = current.getNext();
+			
+		}
+	}
+	public void output() throws IOException {
+		Client c = head;
+		String outputFile = "clients2.csv";	
+		
+		try (FileWriter Writer = new FileWriter(outputFile, false)) {
+			
+	
+				while (c != null) {
+					
+					Writer.append(Long.toString(c.getAcctnum()))
+						  .append(',')
+						  .append(c.getFirstName())
+						  .append(',')
+						  .append(c.getLastName())
+						  .append(',')
+						  .append(Double.toString(c.getAcctBalance()));
+					
+					Writer.append("\n");
+					
+					c = c.getNext();
+					
+				}
+				System.out.println("Added to " + outputFile);
 		}
 	}
 }
