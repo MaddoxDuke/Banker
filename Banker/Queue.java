@@ -1,4 +1,3 @@
-
 public class Queue {
 	private Client head = null;
 	private Client tail = null;
@@ -25,5 +24,15 @@ public class Queue {
 	
 	public Client peek() {
 		return head;
+	}
+	public int count() {
+		Client current = head;
+		int count = 0;
+		
+		while (current != null) {
+			current = current.getNext();
+			count++;
+		}
+		return count;
 	}
 }
