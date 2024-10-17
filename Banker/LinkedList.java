@@ -67,11 +67,10 @@ public class LinkedList {
 			
 		}
 	}
-	public void output() throws IOException {
-		Client c = head;
-		String outputFile = "clients2.csv";	
+	public void output(String fileName) throws IOException {
+		Client c = head;;	
 		
-		try (FileWriter Writer = new FileWriter(outputFile, false)) {
+		try (FileWriter Writer = new FileWriter(fileName, false)) {
 			
 	
 				while (c != null) {
@@ -89,7 +88,7 @@ public class LinkedList {
 					c = c.getNext();
 					
 				}
-				System.out.println("Added to " + outputFile);
+				System.out.println("Added to " + fileName);
 		}
 	}
 }
