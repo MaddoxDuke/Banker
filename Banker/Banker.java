@@ -24,6 +24,7 @@ public class Banker {
 	public static void lobbyMenu(Queue lobbyQ) {
 		Client c = new Client();
 		
+		
 		System.out.println("\n***************************");
 		System.out.print("\nAccount Number > ");
 		c.setAcctNum(s.nextLong());
@@ -88,6 +89,8 @@ public class Banker {
 		
 		private static void closeAcct(Client c, LinkedList masterClient) {
 			Client fromList = masterClient.find(c.getAcctnum());
+			
+			if (fromList == null) return;
 
 			double withdrawal = fromList.getAcctBalance();
 			int answer = -1;
@@ -147,7 +150,7 @@ public class Banker {
 
 		private static void deposit(Client c, LinkedList masterClient) {
 			Client fromList = masterClient.find(c.getAcctnum());
-			long deposit = 0;
+			double deposit = 0;
 			
 			
 			if (fromList != null) {
@@ -219,6 +222,19 @@ public class Banker {
 					}
 					break;
 				case 3:
+					
+					if (lobbyQ.peek() != null) {
+						System.out.println("Error, " + lobbyQ.count() + " clients still remain in queue.");
+						System.out.println("Select another option:\n\n");
+					} 
+					else {
+						try {
+							masterClient.output();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+
 					break;
 					default:
 						System.out.println("Not a valid choice");
