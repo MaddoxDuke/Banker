@@ -8,6 +8,7 @@ public class Banker {
 	
 	public static Scanner s = new Scanner(System.in);
 	public static String fileName = "clients.csv";
+	public static String outputFile = "clients2.csv";
 
 	public static void main(String[] args) {
 		
@@ -229,7 +230,7 @@ public class Banker {
 					} 
 					else {
 						try {
-							masterClient.output();
+							masterClient.output(outputFile);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
